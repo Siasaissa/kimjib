@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildTabItem(icon: Icons.home_outlined, label: 'Home', index: 0),
-              _buildTabItem(icon: Icons.wallet, label: 'Services', index: 1),
+              _buildTabItem(icon: Icons.sync, label: 'Services', index: 1),
               const SizedBox(width: 40), // space for the FAB
               _buildTabItem(icon: Icons.work_outline, label: 'Payments', index: 3),
               _buildTabItem(icon: Icons.person, label: 'Profile', index: 4),
