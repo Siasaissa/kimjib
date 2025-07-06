@@ -48,6 +48,66 @@ class AppDrawer extends StatelessWidget {
                     );
                   },
                 ),
+                ListTile(
+                  leading: const Icon(Icons.work_outline),
+                  title: const Text('Transaction'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.badge_outlined),
+                  title: const Text('Commission'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Customers'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.download),
+                  title: const Text('Downloads'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: const Text('FAQS'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.gavel_outlined),
+                  title: const Text('Terms and Conditions'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.logout),

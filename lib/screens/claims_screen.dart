@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kimjib/screens/app_drawer.dart';
 
 class ClaimsScreen extends StatefulWidget {
   const ClaimsScreen({super.key});
@@ -86,7 +85,6 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
         backgroundColor: Colors.red,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: const AppDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Center(
@@ -315,10 +313,10 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              icon: const Icon(Icons.upload),
+                              icon: const Icon(Icons.cloud_upload),
                               label: const Text('Submit Claim'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
+                                backgroundColor: Colors.amber,
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 shape: RoundedRectangleBorder(
@@ -335,7 +333,6 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 Card(
                   elevation: 2,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -443,7 +440,7 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                               RotationTransition(
                                 turns: const AlwaysStoppedAnimation(0.1),
                                 child: Icon(
-                                  Icons.auto_awesome_outlined,
+                                  Icons.refresh,
                                   color: Colors.red,
                                   size: 24,
                                 ),
@@ -551,40 +548,24 @@ class _ClaimsScreenState extends State<ClaimsScreen> {
                               duration: const Duration(milliseconds: 200),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.red.shade700,
-                                    Colors.red.shade600,
-                                  ],
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.red.shade300,
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, 0),
-                                  ),
-                                ],
+                                color: Colors.red,
+
                               ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () {
-                                    // Handle claim details
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'VIEW FULL CLAIM DETAILS',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0.8,
-                                      ),
+                            child:   SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(Icons.remove_red_eye),
+                                  label: const Text('View More Claims'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
+                                    elevation: 2,
                                   ),
+                                  onPressed: () {},
                                 ),
                               ),
                             ),

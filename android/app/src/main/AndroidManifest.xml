@@ -1,10 +1,11 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kimjib">
     <application
         android:label="kimjib"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.kimjib.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
@@ -42,4 +43,5 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+	<uses-permission android:name="android.permission.CAMERA"/>
 </manifest>

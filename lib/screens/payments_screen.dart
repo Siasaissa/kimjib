@@ -142,7 +142,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Enable Auto-Pay', style: TextStyle(fontSize: 16, color: Colors.white)),
+              const Text('Enable Auto-Pay', style: TextStyle(fontSize: 16, color: Colors.black)),
               Switch(
                 value: isAutoPayEnabled,
                 onChanged: (value) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kimjib/screens/app_drawer.dart';
 import 'dashboard_screen.dart';
-import 'policies_screen.dart';
-import 'claims_screen.dart';
 import 'payments_screen.dart';
 import 'profile_screen.dart';
-import 'buy_screen.dart';
+import 'claims_screen.dart';
+import 'qr_screening.dart';
+import 'services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,10 +17,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
+  final List<Widget> _pages =  [
     DashboardScreen(),
-    BuyInsuranceScreen(),
-    ClaimsScreen(), // Replacing the FAB button action with this
+    ServicePage(),
+    QRScannerPage(),
     PaymentsScreen(),
     ProfileScreen(),
   ];

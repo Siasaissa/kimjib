@@ -9,16 +9,8 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Colors.red,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-              onPressed: (){
-                Navigator.pushReplacementNamed(context, '/home');
-              }
-          ),
-        ],
       ),
       drawer: const AppDrawer(),
       body: SingleChildScrollView(
@@ -30,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
             // Profile Picture Circle
             CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.blue[800],
+              backgroundColor: Colors.red,
               child: const Icon(Icons.person, size: 60, color: Colors.white),
             ),
             const SizedBox(height: 15),
@@ -65,7 +57,87 @@ class ProfileScreen extends StatelessWidget {
                 icon: const Icon(Icons.edit),
                 label: const Text('Edit Profile'),
                 onPressed: () {
-                  // TODO: Navigate to Edit Profile Screen
+                  // Temporary controllers for demonstration
+                  TextEditingController nameController = TextEditingController(text: 'Ahmed');
+                  TextEditingController emailController = TextEditingController(text: 'Ahmed@humtech.co.tz');
+                  TextEditingController phoneController = TextEditingController(text: '+255 712 345 678');
+                  TextEditingController addressController = TextEditingController(text: 'Dar es Salaam, Tanzania');
+                  TextEditingController dateController = TextEditingController(text: 'Jan 1, 1990');
+
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Edit Profile'),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextField(
+                                controller: nameController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Name',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: emailController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: phoneController,
+                                decoration:  const InputDecoration(
+                                  labelText: 'Phone',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: addressController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Address',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: dateController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Date of Birth'
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Save'),
+                            onPressed: () {
+                              String newName = nameController.text;
+                              String newEmail = emailController.text;
+                              String newPhone = phoneController.text;
+                              String newAddress = addressController.text;
+                              String newdate = dateController.text;
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -83,7 +155,7 @@ class ProfileScreen extends StatelessWidget {
                 icon: const Icon(Icons.logout, color: Colors.red),
                 label: const Text('Logout', style: TextStyle(color: Colors.red)),
                 onPressed: () {
-                  // TODO: Handle logout
+                  Navigator.pushReplacementNamed(context, '/login');
                 },
               ),
             ),
@@ -99,7 +171,7 @@ class ProfileScreen extends StatelessWidget {
       elevation: 0,
       color: Colors.grey.shade100,
       child: ListTile(
-        leading: Icon(icon, color: Colors.blue[800]),
+        leading: Icon(icon, color: Colors.red),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(value),
       ),
