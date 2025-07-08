@@ -53,8 +53,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
         elevation: 0,
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      drawer: AppDrawer(),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

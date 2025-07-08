@@ -12,15 +12,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transaction Page'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Transaction Page', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
       ),
-      body: Center(
+
+      body: Padding(
+          padding: EdgeInsets.all(16),
+     child:  SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             _activityTile(
               icon: Icons.work_outline,
               title: 'Motor',
+              status1: 'Approved',
               status: 'Third Party',
               amount: 'TZS 700,000',
               dueDate: '20 July 2025',
@@ -30,6 +36,117 @@ class _TransactionScreenState extends State<TransactionScreen> {
             _activityTile(
               icon: Icons.work_outline,
               title: 'Motor',
+              status1: 'Pending',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Rejected',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Pending',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Rejected',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
+              status: 'Comprehensive',
+              amount: 'TZS 700,000',
+              dueDate: '20 July 2025',
+              color: Colors.red,
+              background: Colors.amber,
+            ),
+            _activityTile(
+              icon: Icons.work_outline,
+              title: 'Motor',
+              status1: 'Approved',
               status: 'Comprehensive',
               amount: 'TZS 700,000',
               dueDate: '20 July 2025',
@@ -39,6 +156,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
           ],
         ),
       ),
+      ),
     );
   }
 }
@@ -46,12 +164,29 @@ class _TransactionScreenState extends State<TransactionScreen> {
 Widget _activityTile({
   required IconData icon,
   required String title,
+  required String status1,
   required String status,
   required String amount,
   required String dueDate,
   required Color color,
   required Color background,
 }) {
+  // Determine color for status1
+  Color status1Color;
+  switch (status1.toLowerCase()) {
+    case 'approved':
+      status1Color = Colors.green;
+      break;
+    case 'pending':
+      status1Color = Colors.orange;
+      break;
+    case 'rejected':
+      status1Color = Colors.red;
+      break;
+    default:
+      status1Color = Colors.grey;
+  }
+
   return Card(
     color: Colors.grey.shade100,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -77,6 +212,10 @@ Widget _activityTile({
             ],
           ),
           const SizedBox(height: 4),
+          Text(
+            status1,
+            style: TextStyle(fontSize: 6, fontWeight: FontWeight.w600, color: status1Color),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

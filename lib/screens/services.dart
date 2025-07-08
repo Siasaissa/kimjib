@@ -5,7 +5,7 @@ import 'claims_screen.dart';
 import 'products_screen.dart';
 import 'reports_screen.dart';
 import 'profoma_screen.dart';
-import 'transaction_screen';
+import 'transaction_screen.dart';
 
 class ServicePage extends StatelessWidget {
   const ServicePage({super.key});
@@ -31,7 +31,7 @@ class ServicePage extends StatelessWidget {
             _buildGridItem(context, Icons.shield_outlined, 'Insurance', const InsuranceScreen()),
             _buildGridItem(context, Icons.refresh, 'Claims', const ClaimsScreen()),
             _buildGridItem(context, Icons.move_to_inbox, 'Products', const ProductsPage()),
-            _buildGridItem(context, Icons.article_sharp, 'Reports', const ReportsPage()),
+            _buildGridItem(context, Icons.article_sharp, 'Reports', const ReportPage()),
             _buildGridItem(context, Icons.description, 'Profoma', const ProfomaPage()),
             _buildGridItem(context, Icons.work_outline, 'Transaction', const TransactionScreen()),
           ],
