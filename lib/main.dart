@@ -5,6 +5,7 @@ import 'package:kimjib/screens/HomeScreen.dart';
 import 'package:kimjib/screens/register_screen.dart';
 import 'package:kimjib/screens/slide_initial.dart';
 import 'package:kimjib/screens/qr_screening.dart';
+import 'package:kimjib/screens/notification_center.dart';
 
 
 void main() {
@@ -55,7 +56,8 @@ class InsuranceApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/register': (context) => const RegisterScreen(),
         '/slide': (context) => const OnboardingScreen(),
-        '/qr': (context) => const QRScannerPage()
+        '/qr': (context) => const QRScannerPage(),
+        '/notifications': (context) => const NotificationCenterScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

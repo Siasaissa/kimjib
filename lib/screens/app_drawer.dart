@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kimjib/screens/transaction_screen.dart';
 import 'settings_screen.dart';
 import 'notification_center.dart';
 
@@ -54,7 +55,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) => const TransactionScreen()),
                     );
                   },
                 ),
@@ -99,7 +100,7 @@ class AppDrawer extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.gavel_outlined),
+                  leading: const Icon(Icons.rule_outlined),
                   title: const Text('Terms and Conditions'),
                   onTap: () {
                     Navigator.push(

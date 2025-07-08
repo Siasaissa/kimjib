@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: const EdgeInsets.all(5),
                 icon: const Icon(Icons.notifications),
                 onPressed: () {
-                  // Handle notification icon press
+                  Navigator.pushReplacementNamed(context, '/notifications');
                 },
               ),
               Positioned(

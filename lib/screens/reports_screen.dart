@@ -32,7 +32,6 @@ class _ReportPageState extends State<ReportPage> {
   final TextEditingController riskNote = TextEditingController();
   final TextEditingController year = TextEditingController();
 
-  // Sample dropdown data
   final List<String> branches = ['Dar', 'Arusha', 'Dodoma'];
   final List<String> insurers = ['Heritage', 'Jubilee', 'NIC'];
   final List<String> segments = ['Retail', 'Corporate'];
@@ -76,106 +75,93 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Insurance Report', style: TextStyle(color: Colors.white),),
-        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text('Insurance Report', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.red,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: ListView(
-            children: [
-              buildDropdown('Select Branch', branches, branch, (val) => setState(() => branch = val)),
-              buildDropdown('Select Insurer', insurers, insurer, (val) => setState(() => insurer = val)),
-              buildTextField('Client Name', controller: clientName),
-              buildTextField('Supplier Name', controller: supplierName),
-              buildTextField('Account', controller: account),
-              buildDropdown('Customer Segment', segments, customerSegment, (val) => setState(() => customerSegment = val)),
-              buildDropdown('Insurance Type', insuranceTypes, insuranceType, (val) => setState(() => insuranceType = val)),
-              buildDropdown('Business Type', businessTypes, businessType, (val) => setState(() => businessType = val)),
-              buildDropdown('Policy Type', policyTypes, policyType, (val) => setState(() => policyType = val)),
-              buildDropdown('Select Currency', currencies, currency, (val) => setState(() => currency = val)),
-              buildTextField('Debit No', controller: debitNo),
-              buildTextField('Risk Note', controller: riskNote),
-
-              buildTextField('Year', controller: year),
-              buildDropdown('Quarter', quarters, quarter, (val) => setState(() => quarter = val)),
-              buildDropdown('Month', months, month, (val) => setState(() => month = val)),
-              buildDropdown('Product', products, product, (val) => setState(() => product = val)),
-
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: buildDatePicker('From Date', fromDate, () => _selectDate(context, true)),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: buildDatePicker('To Date', toDate, () => _selectDate(context, false)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // Show Report
-                    },
-                    icon: const Icon(Icons.bar_chart, color: Colors.white),
-                    label: const Text('Show Report', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // 🔴 Red background
-                      foregroundColor: Colors.white, // ✅ Ensures text stays white
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 16,
+              runSpacing: 10,
+              children: [
+                buildDropdown('Select Branch', branches, branch, (val) => setState(() => branch = val)),
+                buildDropdown('Select Insurer', insurers, insurer, (val) => setState(() => insurer = val)),
+                buildTextField('Client Name', controller: clientName),
+                buildTextField('Supplier Name', controller: supplierName),
+                buildTextField('Account', controller: account),
+                buildDropdown('Customer Segment', segments, customerSegment, (val) => setState(() => customerSegment = val)),
+                buildDropdown('Insurance Type', insuranceTypes, insuranceType, (val) => setState(() => insuranceType = val)),
+                buildDropdown('Business Type', businessTypes, businessType, (val) => setState(() => businessType = val)),
+                buildDropdown('Policy Type', policyTypes, policyType, (val) => setState(() => policyType = val)),
+                buildDropdown('Select Currency', currencies, currency, (val) => setState(() => currency = val)),
+                buildTextField('Debit No', controller: debitNo),
+                buildTextField('Risk Note', controller: riskNote),
+                buildTextField('Year', controller: year),
+                buildDropdown('Quarter', quarters, quarter, (val) => setState(() => quarter = val)),
+                buildDropdown('Month', months, month, (val) => setState(() => month = val)),
+                buildDropdown('Product', products, product, (val) => setState(() => product = val)),
+                buildDatePicker('From Date', fromDate, () => _selectDate(context, true)),
+                buildDatePicker('To Date', toDate, () => _selectDate(context, false)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.bar_chart, color: Colors.white),
+                      label: const Text('Show Report', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      ),
                     ),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      setState(() {
-                        branch = null;
-                        insurer = null;
-                        customerSegment = null;
-                        insuranceType = null;
-                        businessType = null;
-                        policyType = null;
-                        currency = null;
-                        quarter = null;
-                        month = null;
-                        product = null;
-                        fromDate = null;
-                        toDate = null;
-
-                        clientName.clear();
-                        supplierName.clear();
-                        account.clear();
-                        debitNo.clear();
-                        riskNote.clear();
-                        year.clear();
-                      });
-                    },
-                    child: const Text('Clear'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Exit'),
-                  ),
-                ],
-              )
-
-            ],
+                    const SizedBox(width: 10),
+                    OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          branch = null;
+                          insurer = null;
+                          customerSegment = null;
+                          insuranceType = null;
+                          businessType = null;
+                          policyType = null;
+                          currency = null;
+                          quarter = null;
+                          month = null;
+                          product = null;
+                          fromDate = null;
+                          toDate = null;
+                          clientName.clear();
+                          supplierName.clear();
+                          account.clear();
+                          debitNo.clear();
+                          riskNote.clear();
+                          year.clear();
+                        });
+                      },
+                      child: const Text('Clear'),
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Exit'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Utility builders
   Widget buildDropdown(String label, List<String> items, String? value, void Function(String?)? onChanged) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+    return SizedBox(
+      width: 300,
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(labelText: label),
         value: value,
@@ -186,8 +172,8 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget buildTextField(String label, {required TextEditingController controller}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+    return SizedBox(
+      width: 300,
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(labelText: label),
@@ -196,13 +182,16 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget buildDatePicker(String label, DateTime? date, VoidCallback onTap) {
-    return TextFormField(
-      readOnly: true,
-      controller: TextEditingController(
-        text: date != null ? date.toString().split(' ')[0] : '',
+    return SizedBox(
+      width: 300,
+      child: TextFormField(
+        readOnly: true,
+        controller: TextEditingController(
+          text: date != null ? date.toString().split(' ')[0] : '',
+        ),
+        onTap: onTap,
+        decoration: InputDecoration(labelText: label),
       ),
-      onTap: onTap,
-      decoration: InputDecoration(labelText: label),
     );
   }
 }

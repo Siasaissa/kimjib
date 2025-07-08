@@ -14,23 +14,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const AppDrawer(),
       appBar: AppBar(
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Colors.red,
         elevation: 1,
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Settings',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/home');
-            },
-            icon: const Icon(Icons.home, color: Colors.white),
-          )
-        ],
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -148,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('+255 613 803 662',
-              style: TextStyle(fontSize: 15, color: Colors.blue[800],fontWeight: FontWeight.bold),)
+              style: TextStyle(fontSize: 15, color: Colors.red,fontWeight: FontWeight.bold),)
             ],
           ),
           shape: RoundedRectangleBorder(
@@ -207,7 +198,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _settingsTile(IconData icon, String title, VoidCallback onTap, {Color color = Colors.blue}) {
+  Widget _settingsTile(IconData icon, String title, VoidCallback onTap, {Color color = Colors.red}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: Colors.white,
@@ -233,7 +224,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String title,
     required bool isChecked,
     required VoidCallback onTap,
-    Color color = Colors.blue,
+    Color color = Colors.red,
   }) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

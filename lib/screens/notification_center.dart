@@ -31,20 +31,20 @@ class NotificationCenterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notification Center', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue[800],
-        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon:  Icon(Icons.home),
-            onPressed: (){
+            padding: const EdgeInsets.all(8.0),
+            icon: const Icon(Icons.home_outlined),
+            onPressed: () {
               Navigator.pushReplacementNamed(context, '/home');
             },
-
           ),
         ],
+        title: const Text('Notification Center', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+        iconTheme: const IconThemeData(color: Colors.white),
+
       ),
-      drawer: const AppDrawer(),
       body: notifications.isEmpty
           ? const Center(
         child: Text(
