@@ -9,7 +9,7 @@ class PaymentsScreen extends StatefulWidget {
 }
 
 class _PaymentsScreenState extends State<PaymentsScreen> {
-  final Color primaryColor = Colors.red.shade700; // Red color scheme
+  final Color primaryColor = Colors.red; // Red color scheme
   DateTime dueDate = DateTime.now().add(const Duration(days: 7));
   String? _selectedInsuranceType;
   String? _selectedPaymentMethod;
@@ -234,7 +234,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             const SizedBox(height: 8),
             Text('You will receive a payment request on your mobile device',
                 style: TextStyle(
-                  color: Colors.red.shade600,
+                  color: Colors.red,
                   fontSize: 12,
                 )),
           ],
