@@ -88,6 +88,7 @@ class _QRScannerPageState extends State<QRScannerPage> with SingleTickerProvider
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: const Text('Scanner', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
         actions: [
           IconButton(
             icon: Icon(
