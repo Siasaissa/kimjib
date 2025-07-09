@@ -22,8 +22,8 @@ class ProfileScreen extends StatelessWidget {
             // Profile Picture Circle
             CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.person, size: 60, color: Colors.white),
+              backgroundColor: Colors.red.shade50,
+              child: const Icon(Icons.person_outline, size: 60, color: Colors.red),
             ),
             const SizedBox(height: 15),
 
@@ -47,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
+                  backgroundColor: Colors.grey,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
@@ -171,8 +171,19 @@ class ProfileScreen extends StatelessWidget {
       elevation: 0,
       color: Colors.grey.shade100,
       child: ListTile(
-        leading: Icon(icon, color: Colors.red),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        leading: CircleAvatar(
+          backgroundColor: Colors.red.withOpacity(0.1), // light red background
+          radius: 20, // size of the circle
+          child: Icon(
+            icon,
+            color: Colors.red,
+            size: 20,
+          ),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         subtitle: Text(value),
       ),
     );

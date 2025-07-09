@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kimjib/screens/transaction_screen.dart';
 import 'settings_screen.dart';
 import 'notification_center.dart';
+import 'commission_screen.dart';
+import 'customer_screen.dart';
+import 'downloads_screen.dart';
+import 'faqs_screen.dart';
+import 'terms_and_conditions_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   final Function(int)? onSelectPage;
@@ -65,7 +70,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) =>  CommissionPage()),
                     );
                   },
                 ),
@@ -75,7 +80,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) =>  CustomerPage()),
                     );
                   },
                 ),
@@ -85,7 +90,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) =>  DownloadsPage()),
                     );
                   },
                 ),
@@ -95,7 +100,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) =>  FAQsPage()),
                     );
                   },
                 ),
@@ -105,7 +110,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      MaterialPageRoute(builder: (context) =>  TermsAndConditionsPage()),
                     );
                   },
                 ),
