@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kimjib/screens/app_drawer.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class PaymentsScreen extends StatefulWidget {
   const PaymentsScreen({super.key});
@@ -16,6 +22,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   bool _autoPayEnabled = false;
   bool _isProcessing = false;
   bool _showCardForm = false;
+  bool _showBankDetails = false;
 
   // Form controllers
   final TextEditingController _cardNumberController = TextEditingController();
@@ -53,8 +60,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         elevation: 0,
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -86,6 +94,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                       _buildPaymentMethodsSection(theme),
                     const SizedBox(height: 16),
 
+                    // Bank Transfer Details (shown when bank transfer selected)
+                    if (_showBankDetails) _buildBankTransferDetails(),
+
                     // Card Form (shown when card payment selected)
                     if (_showCardForm) _buildCardForm(),
 
@@ -96,7 +107,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                     // Auto Pay Toggle
                     if (_selectedInsuranceType != null &&
                         !_showCardForm &&
-                        _selectedPaymentMethod != 'Mobile Wallet')
+                        _selectedPaymentMethod != 'Mobile Wallet' &&
+                        !_showBankDetails)
                       _buildAutoPayToggle(theme),
 
                     // Pay Button
@@ -111,6 +123,84 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildBankTransferDetails() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Bank Transfer Instructions',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                )),
+            const SizedBox(height: 16),
+            _buildBankDetailRow('Bank Name', 'CRDB Bank'),
+            _buildBankDetailRow('Account Name', 'KimJib Insurance Ltd'),
+            _buildBankDetailRow('Account Number', '0152012345678'),
+            _buildBankDetailRow('Swift Code', 'CORUTZTZ'),
+            _buildBankDetailRow('Reference', 'INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}'),
+            const SizedBox(height: 16),
+            Text('After making the transfer, please upload proof of payment below:',
+                style: TextStyle(color: Colors.grey.shade600)),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              icon: Icon(Icons.upload_file, color: primaryColor),
+              label: const Text('Upload Payment Proof'),
+              onPressed: () {
+                // Implement file upload functionality
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Upload functionality would be implemented here')),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBankDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,  // Fixed width for label
+            child: Text(label,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade700,
+                )),
+          ),
+          Expanded(  // Add Expanded here
+            child: Text(value,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+                overflow: TextOverflow.ellipsis),  // Add overflow
+          ),
+          IconButton(
+            icon: Icon(Icons.copy, size: 18, color: primaryColor),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Copied $value to clipboard')),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -269,6 +359,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
               _selectedInsuranceType = value;
               _selectedPaymentMethod = null;
               _showCardForm = false;
+              _showBankDetails = false;
             });
           },
           hint: const Text('Choose your insurance'),
@@ -302,9 +393,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             const SizedBox(height: 16),
             _buildDetailRow('Insurance Type', _selectedInsuranceType!, theme),
             const SizedBox(height: 12),
-            _buildDetailRow('Policy Number', 'INS-2023-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}7890', theme),
+            _buildDetailRow('Policy Number', 'INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}7890', theme),
             const SizedBox(height: 12),
-            _buildDetailRow('Coverage Period', 'Jan 2023 - Dec 2023', theme),
+            _buildDetailRow('Coverage Period', '${_formatDate(DateTime.now())} - ${_formatDate(DateTime.now().add(const Duration(days: 365)))}', theme),
           ],
         ),
       ),
@@ -408,6 +499,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           onTap: () => setState(() {
             _selectedPaymentMethod = 'Credit/Debit Card';
             _showCardForm = true;
+            _showBankDetails = false;
           }),
         ),
         const SizedBox(height: 12),
@@ -419,6 +511,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           onTap: () => setState(() {
             _selectedPaymentMethod = 'Bank Transfer';
             _showCardForm = false;
+            _showBankDetails = true;
           }),
         ),
         const SizedBox(height: 12),
@@ -430,6 +523,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           onTap: () => setState(() {
             _selectedPaymentMethod = 'Mobile Wallet';
             _showCardForm = false;
+            _showBankDetails = false;
           }),
         ),
       ],
@@ -576,10 +670,13 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                   color: Colors.grey.shade600,
                 )),
           ),
-          Text(value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              )),
+          Expanded(  // Add Expanded here
+            child: Text(value,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+                overflow: TextOverflow.ellipsis),
+          ),
         ],
       ),
     );
@@ -637,64 +734,509 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     _showConfirmationDialog(context);
   }
 
+
+  Future<void> _deliverPolicy() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Header(
+                level: 0,
+                child: pw.Text('Insurance Policy',
+                    style: pw.TextStyle(
+                      fontSize: 24,
+                      fontWeight: pw.FontWeight.bold,
+                    )),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text('KimJib Insurance Ltd',
+                  style: pw.TextStyle(
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.Text('Policy Effective: ${_formatDate(DateTime.now())}'),
+              pw.Divider(),
+              pw.Text('Policy Details',
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.Text('Insurance Type: $_selectedInsuranceType'),
+              pw.Text('Policy Number: INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}7890'),
+              pw.Text('Coverage Period: ${_formatDate(DateTime.now())} - ${_formatDate(DateTime.now().add(const Duration(days: 365)))}'),
+              pw.Divider(),
+              pw.Text('Policy Terms and Conditions',
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit...'),
+              pw.Spacer(),
+              pw.Text('This is your official policy document. Please keep it safe.',
+                  style: pw.TextStyle(
+                    fontSize: 14,
+                    fontStyle: pw.FontStyle.italic,
+                  )),
+            ],
+          );
+        },
+      ),
+    );
+
+    // For demo purposes, we'll just show the PDF
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+
+    // In a real app, you would also want to email this to the user:
+    /*
+    final Email email = Email(
+      body: 'Please find attached your insurance policy document.',
+      subject: 'Your KimJib Insurance Policy',
+      recipients: ['customer@email.com'],
+      attachmentPaths: [policyPdfPath],
+    );
+
+    await FlutterEmailSender.send(email);
+    */
+  }
+  void _showReceiptPopup(BuildContext context) {
+    double amount = _calculatePremium(_selectedInsuranceType!);
+    String paymentMethod = _selectedPaymentMethod ?? 'Unknown';
+    String policyNumber = 'INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}7890';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 4,
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 500),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Header with logo/icon
+                    Icon(
+                      Icons.verified_outlined,
+                      size: 48,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'PAYMENT RECEIPT',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'KimJib Insurance Ltd',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Divider(height: 1, thickness: 1, color: Colors.grey.shade300),
+
+                    // Receipt details section
+                    const SizedBox(height: 24),
+                    _buildReceiptSection(
+                      title: 'Receipt Details',
+                      children: [
+                        _buildReceiptRow('Receipt No:', 'RC${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}'),
+                        _buildReceiptRow('Date:', _formatDate(DateTime.now())),
+                        _buildReceiptRow('Time:', '${TimeOfDay.now().format(context)}'),
+                      ],
+                    ),
+
+                    // Payment information section
+                    const SizedBox(height: 16),
+                    _buildReceiptSection(
+                      title: 'Payment Information',
+                      children: [
+                        _buildReceiptRow('Policy Number:', policyNumber),
+                        _buildReceiptRowWithIcon('Insurance Type:', _selectedInsuranceType!, Icons.shield_outlined),
+                        _buildReceiptRow('Payment Method:', paymentMethod),
+                      ],
+                    ),
+
+                    // Amount section
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Total Amount Paid',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'TZS ${amount.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Footer
+                    const SizedBox(height: 24),
+                    Divider(height: 1, thickness: 1, color: Colors.grey.shade300),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Thank you for choosing KimJib Insurance!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade800,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'This is your official receipt. Please keep it for your records.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Close button
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'CLOSE RECEIPT',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    //download  button
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop(); // Close the dialog
+                        await _generateAndSaveReceipt();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'DOWNLOAD RECEIPT',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildReceiptSection({required String title, required List<Widget> children}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: primaryColor,
+            fontSize: 16,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Column(
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReceiptRowWithIcon(String label, String value, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: Colors.grey.shade600),
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReceiptRow(String label, String value, {bool isBold = false, Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
+                color: valueColor,
+              ),
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showConfirmationDialog(BuildContext context) {
     double amount = _calculatePremium(_selectedInsuranceType!);
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
         ),
-        child: Padding(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Container(
           padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 5,
+              )
+            ],
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.check_circle,
-                    size: 48, color: Colors.green.shade600),
+              // Animated Checkmark
+              TweenAnimationBuilder(
+                duration: const Duration(milliseconds: 500),
+                tween: Tween<double>(begin: 0, end: 1),
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: Curves.elasticOut.transform(value),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.green.shade100,
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.check_circle,
+                        size: 60,
+                        color: Colors.green.shade600,
+                      ),
+                    ),
+                  );
+                },
               ),
+
               const SizedBox(height: 24),
-              Text('Payment Successful!',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  )),
-              const SizedBox(height: 8),
-              Text('TZS ${amount.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  )),
+
+              // Success Message
+              Text(
+                'Payment Successful!',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade800,
+                ),
+              ),
+
               const SizedBox(height: 16),
-              Text('Paid via $_selectedPaymentMethod',
-                  style: TextStyle(color: Colors.grey.shade600)),
+
+              // Amount
+              Text(
+                'TZS ${amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ),
+
               const SizedBox(height: 8),
-              Text('For $_selectedInsuranceType',
-                  style: TextStyle(color: Colors.grey.shade600)),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+
+              // Payment Details
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    _buildDetailItem(
+                      icon: Icons.payment,
+                      label: 'Payment Method',
+                      value: _selectedPaymentMethod!,
+                    ),
+                    const Divider(height: 16),
+                    _buildDetailItem(
+                      icon: Icons.medical_services,
+                      label: 'Insurance Type',
+                      value: _selectedInsuranceType!,
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        side: BorderSide(color: primaryColor),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _showReceiptPopup(context);
+                      },
+                      child: Text(
+                        'View Receipt',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Done',
-                      style: TextStyle(
-                          fontSize: 16,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        await _generateAndSaveReceipt();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Receipt downloaded successfully'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Download',
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -702,4 +1244,426 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
       ),
     );
   }
+
+  Widget _buildDetailItem({required IconData icon, required String label, required String value}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey.shade600),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _generateReceipt() async {
+    final pdf = pw.Document();
+
+    // Add customer name from card form (or use a default if empty)
+    final customerName = _cardNameController.text.isNotEmpty
+        ? _cardNameController.text
+        : 'Customer';
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // Header with company logo and info
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text('KIMJIB INSURANCE LTD',
+                          style: pw.TextStyle(
+                            fontSize: 18,
+                            fontWeight: pw.FontWeight.bold,
+                          )),
+                      pw.Text('P.O. Box 12345, Dar es Salaam, Tanzania'),
+                      pw.Text('Phone: +255 123 456 789'),
+                      pw.Text('Email: info@kimjib.co.tz'),
+                    ],
+                  ),
+                  pw.Text('OFFICIAL RECEIPT',
+                      style: pw.TextStyle(
+                        fontSize: 20,
+                        fontWeight: pw.FontWeight.bold,
+                        color: PdfColors.red,
+                      )),
+                ],
+              ),
+
+              pw.SizedBox(height: 20),
+              pw.Divider(thickness: 2),
+              pw.SizedBox(height: 10),
+
+              // Customer Information
+              pw.Text('Customer: $customerName',
+                  style: pw.TextStyle(
+                    fontSize: 14,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.Text('Date: ${_formatDate(DateTime.now())}'),
+              pw.Text('Receipt No: RC${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}'),
+              pw.SizedBox(height: 20),
+
+              // Payment Details
+              pw.Text('PAYMENT DETAILS',
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    fontWeight: pw.FontWeight.bold,
+                    decoration: pw.TextDecoration.underline,
+                  )),
+              pw.SizedBox(height: 10),
+
+              // Payment information table
+              pw.Table(
+                border: pw.TableBorder.all(),
+                children: [
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text('Description',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text('Amount (TZS)',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text('$_selectedInsuranceType Premium Payment'),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(8),
+                        child: pw.Text(
+                            _calculatePremium(_selectedInsuranceType!)
+                                .toStringAsFixed(2)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 15),
+
+              // Payment method and reference
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text('Payment Method: $_selectedPaymentMethod'),
+                      pw.Text('Reference: INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}'),
+                    ],
+                  ),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    children: [
+                      pw.Text('TOTAL PAID',
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      pw.Text('TZS ${_calculatePremium(_selectedInsuranceType!).toStringAsFixed(2)}',
+                          style: pw.TextStyle(
+                              fontSize: 16, fontWeight: pw.FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 30),
+
+              // Footer and signature
+              pw.Divider(thickness: 1),
+              pw.SizedBox(height: 10),
+              pw.Text('Thank you for your payment!',
+                  style: pw.TextStyle(fontStyle: pw.FontStyle.italic)),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                children: [
+                  pw.Column(
+                    children: [
+                      pw.Text('Authorized Signature'),
+                      pw.SizedBox(height: 40), // Space for signature
+                      pw.Text('KimJib Insurance Ltd'),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    // Show the PDF preview and save option
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+
+    // Optional: Email the receipt to customer
+    // await _sendReceiptByEmail(pdf, customerName);
+  }
+
+  Future<void> _generateAndSaveReceipt() async {
+    final pdf = pw.Document();
+    double amount = _calculatePremium(_selectedInsuranceType!);
+    String paymentMethod = _selectedPaymentMethod ?? 'Unknown';
+    String policyNumber = 'INS-${_selectedInsuranceType!.substring(0, 3).toUpperCase()}${DateTime.now().year}7890';
+    String receiptNumber = 'RC${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}';
+    String customerName = _cardNameController.text.isNotEmpty
+        ? _cardNameController.text
+        : 'Customer';
+
+    // Get current time without using BuildContext
+    final now = DateTime.now();
+    final timeString = '${now.hour}:${now.minute.toString().padLeft(2, '0')}';
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {  // This is pdf.Context, not Flutter's BuildContext
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              // Header
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text('KimJib Insurance Ltd',
+                          style: pw.TextStyle(
+                            fontSize: 20,
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColors.red,
+                          )),
+                      pw.Text('P.O. Box 12345, Dar es Salaam, Tanzania'),
+                      pw.Text('Phone: +255 123 456 789'),
+                      pw.Text('Email: info@kimjib.co.tz'),
+                    ],
+                  ),
+                  pw.Text('PAYMENT RECEIPT',
+                      style: pw.TextStyle(
+                        fontSize: 24,
+                        fontWeight: pw.FontWeight.bold,
+                      )),
+                ],
+              ),
+
+              pw.SizedBox(height: 20),
+              pw.Divider(),
+              pw.SizedBox(height: 10),
+
+              // Receipt details
+              pw.Text('Receipt Number: $receiptNumber'),
+              pw.Text('Date: ${_formatDate(DateTime.now())}'),
+              pw.Text('Time: $timeString'),  // Use our calculated time string
+
+              pw.SizedBox(height: 20),
+
+              // Payment information
+              pw.Text('Payment Information',
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    fontWeight: pw.FontWeight.bold,
+                  )),
+              pw.SizedBox(height: 10),
+
+              pw.Table(
+                border: pw.TableBorder.all(),
+                children: [
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        child: pw.Text('Policy Number'),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                      pw.Padding(
+                        child: pw.Text(policyNumber),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        child: pw.Text('Insurance Type'),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                      pw.Padding(
+                        child: pw.Text(_selectedInsuranceType!),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Padding(
+                        child: pw.Text('Payment Method'),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                      pw.Padding(
+                        child: pw.Text(paymentMethod),
+                        padding: const pw.EdgeInsets.all(8),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              pw.SizedBox(height: 20),
+
+              // Amount section
+              pw.Container(
+                alignment: pw.Alignment.center,
+                padding: const pw.EdgeInsets.all(16),
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.grey100,
+                  borderRadius: pw.BorderRadius.circular(8),
+                ),
+                child: pw.Column(
+                  children: [
+                    pw.Text('Total Amount Paid',
+                        style: pw.TextStyle(
+                          fontSize: 14,
+                        )),
+                    pw.SizedBox(height: 8),
+                    pw.Text('TZS ${amount.toStringAsFixed(2)}',
+                        style: pw.TextStyle(
+                          fontSize: 24,
+                          fontWeight: pw.FontWeight.bold,
+                        )),
+                  ],
+                ),
+              ),
+
+              pw.SizedBox(height: 30),
+
+              // Footer
+              pw.Divider(),
+              pw.SizedBox(height: 10),
+              pw.Text('Thank you for choosing KimJib Insurance!',
+                  style: pw.TextStyle(
+                    fontSize: 14,
+                    fontStyle: pw.FontStyle.italic,
+                  )),
+              pw.Text('This is your official receipt. Please keep it for your records.',
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                  )),
+            ],
+          );
+        },
+      ),
+    );
+
+    try {
+      // Get the downloads directory
+      final directory = await getDownloadsDirectory();
+      if (directory == null) {
+        throw Exception('Cannot access downloads directory');
+      }
+
+      // Create file
+      final file = File('${directory.path}/KimJib_Receipt_$receiptNumber.pdf');
+
+      // Save the PDF file
+      await file.writeAsBytes(await pdf.save());
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Receipt downloaded to ${file.path}'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+
+      // Optional: Open the file after saving
+      // OpenFile.open(file.path);
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving receipt: ${e.toString()}'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  Future<void> _sendReceiptByEmail(pw.Document pdf, String customerName) async {
+    try {
+      // Save PDF temporarily
+      final output = await getTemporaryDirectory();
+      final file = File('${output.path}/receipt.pdf');
+      await file.writeAsBytes(await pdf.save());
+
+      final Email email = Email(
+        body: 'Dear $customerName,\n\nPlease find attached your payment receipt...',
+        subject: 'Your Payment Receipt from KimJib Insurance',
+        recipients: ['customer@email.com'],
+        attachmentPaths: [file.path],
+      );
+
+      await FlutterEmailSender.send(email);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not send email: ${e.toString()}')),
+      );
+    }
+  }
+}
+Widget _buildReceiptRow(String label, String value, {bool isBold = false}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: isBold
+              ? const TextStyle(fontWeight: FontWeight.bold)
+              : null,
+        ),
+        Text(
+          value,
+          style: isBold
+              ? const TextStyle(fontWeight: FontWeight.bold)
+              : null,
+        ),
+      ],
+    ),
+  );
 }

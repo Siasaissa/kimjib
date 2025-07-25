@@ -29,7 +29,7 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 'Welcome to Kimjib',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blue[800],),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color:  Color(0xFF171C6E)),
               ),
               const SizedBox(height: 10),
               const Text(
@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -74,7 +74,7 @@ class RegisterScreen extends StatelessWidget {
                   // Border when the TextField IS focused
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
               ),
@@ -94,13 +94,13 @@ class RegisterScreen extends StatelessWidget {
                   // Border when the TextField IS focused
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               TextField(
-                obscureText: false,
+                obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.lock_outline),
                   labelText: 'Password',
@@ -114,7 +114,7 @@ class RegisterScreen extends StatelessWidget {
                   // Border when the TextField IS focused
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
               ),
@@ -128,7 +128,7 @@ class RegisterScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    backgroundColor: Colors.blue[800],
+                    backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

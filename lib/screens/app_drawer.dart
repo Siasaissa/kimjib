@@ -74,7 +74,7 @@ class AppDrawer extends StatelessWidget {
                     );
                   },
                 ),
-                ListTile(
+               /* ListTile(
                   leading: const Icon(Icons.person),
                   title: const Text('Customers'),
                   onTap: () {
@@ -93,7 +93,7 @@ class AppDrawer extends StatelessWidget {
                       MaterialPageRoute(builder: (context) =>  DownloadsPage()),
                     );
                   },
-                ),
+                ),*/
                 ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: const Text('FAQS'),

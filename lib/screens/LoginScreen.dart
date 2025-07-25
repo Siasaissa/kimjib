@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -107,6 +108,17 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: SignInButton(
+                  Buttons.google,
+                  text: "Login with Google",
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
+                ),
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +127,6 @@ class LoginScreen extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/register');
-
                     },
                     child: Text(
                       'Register',

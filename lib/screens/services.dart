@@ -32,7 +32,7 @@ class ServicePage extends StatelessWidget {
             _buildGridItem(context, Icons.refresh, 'Claims', const ClaimsScreen()),
             _buildGridItem(context, Icons.move_to_inbox, 'Products',  ProductsPage()),
             _buildGridItem(context, Icons.article_sharp, 'Reports', const ReportPage()),
-            _buildGridItem(context, Icons.description, 'Profoma',  ProformaPage()),
+            _buildGridItem(context, Icons.description, 'Policy',  MyPoliciesPage()),
             _buildGridItem(context, Icons.work_outline, 'Transaction', const TransactionScreen()),
           ],
         ),
