@@ -3,8 +3,7 @@ import 'package:kimjib/screens/transaction_screen.dart';
 import 'settings_screen.dart';
 import 'notification_center.dart';
 import 'commission_screen.dart';
-import 'customer_screen.dart';
-import 'downloads_screen.dart';
+import 'dashboard_screen.dart';
 import 'faqs_screen.dart';
 import 'terms_and_conditions_screen.dart';
 
@@ -34,6 +33,16 @@ class AppDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('Dashboard'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> DashboardScreen()),
+                    );
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.policy),
                   title: const Text('Notifications Center'),

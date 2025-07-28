@@ -94,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () => _showLanguageDialog(context),
             ),
             _buildDivider(),
-            _buildSettingsTile(
+            /*_buildSettingsTile(
               context: context,
               icon: Icons.dark_mode_outlined,
               title: 'Dark Mode',
@@ -107,7 +107,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
                 activeColor: primaryColor,
               ),
-            ),
+            ),*/
             const SizedBox(height: 24),
 
             // Support Section
@@ -141,7 +141,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: ElevatedButton(
                 onPressed: () => _confirmLogout(context),
                 style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(300, 50),
+                  fixedSize: const Size(300, 60),
                   backgroundColor: Colors.transparent,
                   foregroundColor: Colors.red,
                   elevation: 0,
