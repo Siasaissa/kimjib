@@ -20,7 +20,7 @@ class _GetQuotePageState extends State<GetQuotePage> {
   bool _isLoading = false;
 
   final List<Map<String, dynamic>> _insurers = [
-    {'name': 'Insurer A', 'multiplier': 0.05},
+    {'name': 'Insurer Suretech Solution', 'multiplier': 0.05},
    // {'name': 'Insurer B', 'multiplier': 0.045},
    // {'name': 'Insurer C', 'multiplier': 0.055},
   ];
@@ -44,7 +44,7 @@ class _GetQuotePageState extends State<GetQuotePage> {
       double premium = baseValue * insurer['multiplier'];
       if (widget.insuranceType.toLowerCase() == 'life' ||
           widget.insuranceType.toLowerCase() == 'health') {
-        premium *= (1 + (age - 30) * 0.01);
+        premium *= ((1+ 10000) * 0.01); //firstly it was premium *= (1+(age-30) *0.01)
       }
       return {
         'insurer': insurer['name'],
@@ -90,14 +90,14 @@ class _GetQuotePageState extends State<GetQuotePage> {
               validator: (value) =>
               (value == null || value.isEmpty) ? 'Please enter vehicle value' : null,
             ),
-            const SizedBox(height: 24),
+           /* const SizedBox(height: 24),  field for age
             TextFormField(
               controller: _ageController,
               keyboardType: TextInputType.number,
               decoration: buildInputDecoration('Driver Age', Icons.person),
               validator: (value) =>
               (value == null || value.isEmpty) ? 'Please enter driver age' : null,
-            ),
+            ),*/
           ],
         );
 
@@ -113,13 +113,13 @@ class _GetQuotePageState extends State<GetQuotePage> {
               validator: (value) =>
               (value == null || value.isEmpty) ? 'Please enter sum insured' : null,
             ),
-            const SizedBox(height: 24),
+           /* const SizedBox(height: 24), field for age
             TextFormField(
               controller: _ageController,
               keyboardType: TextInputType.number,
               decoration: buildInputDecoration('Age', Icons.cake),
               validator: (value) => (value == null || value.isEmpty) ? 'Please enter your age' : null,
-            ),
+            ),*/
           ],
         );
 
@@ -134,14 +134,14 @@ class _GetQuotePageState extends State<GetQuotePage> {
               validator: (value) =>
               (value == null || value.isEmpty) ? 'Please enter trip cost' : null,
             ),
-            const SizedBox(height: 24),
+          /*  const SizedBox(height: 24), age field
             TextFormField(
               controller: _ageController,
               keyboardType: TextInputType.number,
               decoration: buildInputDecoration('Traveler Age', Icons.person_outline),
               validator: (value) =>
               (value == null || value.isEmpty) ? 'Please enter traveler age' : null,
-            ),
+            ),*/
           ],
         );
 

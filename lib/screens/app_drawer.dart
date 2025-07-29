@@ -37,10 +37,7 @@ class AppDrawer extends StatelessWidget {
                   leading: const Icon(Icons.home),
                   title: const Text('Dashboard'),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=> DashboardScreen()),
-                    );
+                    Navigator.pushReplacementNamed(context, '/home');
                   },
                 ),
                 ListTile(

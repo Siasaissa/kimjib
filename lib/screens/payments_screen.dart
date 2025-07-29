@@ -833,16 +833,6 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                       color: Colors.green,
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      'PAYMENT RECEIPT',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
                     const SizedBox(height: 4),
                     Text(
                       'KimJib Insurance Ltd',
@@ -850,13 +840,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey.shade700,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     Divider(height: 1, thickness: 1, color: Colors.grey.shade300),
 
                     // Receipt details section
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 12),
                     _buildReceiptSection(
                       title: 'Receipt Details',
                       children: [
@@ -867,20 +858,20 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                     ),
 
                     // Payment information section
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     _buildReceiptSection(
                       title: 'Payment Information',
                       children: [
                         _buildReceiptRow('Policy Number:', policyNumber),
-                        _buildReceiptRowWithIcon('Insurance Type:', _selectedInsuranceType!, Icons.shield_outlined),
+                        _buildReceiptRowWithIcon('Insurance Type:', _selectedInsuranceType!),
                         _buildReceiptRow('Payment Method:', paymentMethod),
                       ],
                     ),
 
                     // Amount section
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: primaryColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
@@ -890,7 +881,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                           Text(
                             'Total Amount Paid',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 10,
                               color: Colors.grey.shade700,
                             ),
                           ),
@@ -898,7 +889,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                           Text(
                             'TZS ${amount.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 28,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: primaryColor,
                             ),
@@ -908,29 +899,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                     ),
 
                     // Footer
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Divider(height: 1, thickness: 1, color: Colors.grey.shade300),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Thank you for choosing KimJib Insurance!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
                     const SizedBox(height: 8),
-                    Text(
-                      'This is your official receipt. Please keep it for your records.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
                     // Close button
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -994,7 +965,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: primaryColor,
-            fontSize: 16,
+            fontSize: 12,
           ),
         ),
         const SizedBox(height: 12),
@@ -1013,18 +984,17 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     );
   }
 
-  Widget _buildReceiptRowWithIcon(String label, String value, IconData icon) {
+  Widget _buildReceiptRowWithIcon(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: Colors.grey.shade600),
-          const SizedBox(width: 8),
+
           Expanded(
             flex: 2,
             child: Text(
               label,
-              style: TextStyle(
+              style: TextStyle( fontSize: 10,
                 color: Colors.grey.shade700,
               ),
             ),
@@ -1033,7 +1003,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             flex: 3,
             child: Text(
               value,
-              style: TextStyle(
+              style: TextStyle( fontSize: 8,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.end,
@@ -1053,7 +1023,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             flex: 2,
             child: Text(
               label,
-              style: TextStyle(
+              style: TextStyle( fontSize: 10,
                 color: Colors.grey.shade700,
               ),
             ),
@@ -1062,7 +1032,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             flex: 3,
             child: Text(
               value,
-              style: TextStyle(
+              style: TextStyle( fontSize: 8,
                 fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
                 color: valueColor,
               ),
@@ -1647,20 +1617,20 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 }
 Widget _buildReceiptRow(String label, String value, {bool isBold = false}) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    padding: const EdgeInsets.symmetric(vertical: 2.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: isBold
-              ? const TextStyle(fontWeight: FontWeight.bold)
+              ? const TextStyle(fontSize:10, fontWeight: FontWeight.bold)
               : null,
         ),
         Text(
           value,
           style: isBold
-              ? const TextStyle(fontWeight: FontWeight.bold)
+              ? const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)
               : null,
         ),
       ],

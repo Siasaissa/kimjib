@@ -53,7 +53,6 @@ class NotificationCenterScreen extends StatelessWidget {
         ),
       )
           : ListView.separated(
-        padding: const EdgeInsets.all(16),
         itemCount: notifications.length,
         separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
@@ -94,9 +93,9 @@ class NotificationCenterScreen extends StatelessWidget {
           backgroundColor: iconColor.withOpacity(0.2),
           child: Icon(icon, color: iconColor),
         ),
-        title: Text(notification['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(notification['message']!),
-        trailing: Text(notification['time']!, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        title: Text(notification['title']!, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+        subtitle: Text(notification['message']!, style: TextStyle(fontSize: 10),),
+        trailing: Text(notification['time']!, style: const TextStyle(fontSize: 7, color: Colors.grey)),
         onTap: () {
           // navigate to detailed view of a specific notification
         },

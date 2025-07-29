@@ -143,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text('Edit Profile'),
+                        title: const Text('Edit Profile',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                         content: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -153,7 +153,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Name',
                                   border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
+
                               ),
                               const SizedBox(height: 16),
                               TextField(
@@ -161,6 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Email',
                                   border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -169,6 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration:  const InputDecoration(
                                   labelText: 'Phone',
                                   border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -177,6 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Address',
                                   border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -185,15 +190,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: const InputDecoration(
                                   labelText: 'Next Kin',
                                   border: OutlineInputBorder(),
-
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
                               ),
                               const SizedBox(height: 16),
                               TextField(
                                 controller: dateController,
                                 decoration: const InputDecoration(
-                                    labelText: 'Date of Birth'
+                                    labelText: 'Date of Birth',
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                                 ),
+
                               )
                             ],
                           ),

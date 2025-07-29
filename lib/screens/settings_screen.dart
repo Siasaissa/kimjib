@@ -410,7 +410,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: theme.cardColor,
           title: Text(
             'About Kimjib',
-            style: TextStyle(color: theme.colorScheme.onSurface),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
+            textAlign: TextAlign.center,
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -483,22 +484,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: Text(
             'Help & Support',
             style: TextStyle(color: theme.colorScheme.onSurface),
+            textAlign: TextAlign.center, // 👈 Center the title only
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, // 👈 Keep all text left-aligned
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.help_outline,
-                  color: theme.colorScheme.primary,
-                  size: 40,
+              Center( // 👈 Only center the icon
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.help_outline,
+                    color: theme.colorScheme.primary,
+                    size: 40,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -563,6 +567,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         );
+
       },
     );
   }
@@ -580,7 +585,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: theme.cardColor,
           title: Text(
             'Privacy Policy',
-            style: TextStyle(color: theme.colorScheme.onSurface),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
+            textAlign: TextAlign.center,
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -653,7 +659,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: theme.cardColor,
           title: Text(
             'Edit Profile',
-            style: TextStyle(color: theme.colorScheme.onSurface),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -664,8 +670,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: InputDecoration(
                     labelText: 'Full Name',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -674,8 +681,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -685,8 +693,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12), // reduce height
                   ),
                   keyboardType: TextInputType.phone,
                 ),
@@ -752,7 +761,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: theme.cardColor,
           title: Text(
             'Change Password',
-            style: TextStyle(color: theme.colorScheme.onSurface),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: theme.colorScheme.onSurface),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -765,10 +774,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                   obscureText: true,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: newPasswordController,
                   decoration: InputDecoration(
@@ -776,10 +786,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                   obscureText: true,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
@@ -787,6 +798,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   ),
                   obscureText: true,
                 ),
