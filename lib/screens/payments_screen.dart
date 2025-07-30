@@ -319,7 +319,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 8),
             Text('You will receive a payment request on your mobile device',
